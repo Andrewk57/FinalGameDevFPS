@@ -8,6 +8,7 @@ public class shootScript : MonoBehaviour
     private Ray ray;
     //public GameObject shootPoint;
     public GameObject impactPNG;
+    public int Damage = 35;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,11 @@ public class shootScript : MonoBehaviour
             {
                 GameObject impactEffectGO = Instantiate(impactPNG, hit.point, Quaternion.identity) as GameObject;
                 Destroy(impactEffectGO, 3f);
+                if (hit.collider.gameObject.tag == "Enemy")
+                {
+                    healthManagerEnemy health = hit.collider.gameObject.GetComponent<healthManagerEnemy>();
+                    health.damage(Damage);
+                }
             }
         }
     }
