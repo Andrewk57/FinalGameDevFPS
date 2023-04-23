@@ -8,7 +8,7 @@ public class move : MonoBehaviour
     public State state;
     [Header("Pause State")]
     public float pauseLength;
-    private float pauseTimer = 0;
+    private float pauseTimer = 1;
 
     //The node that we are currently following. Set it at edit time to determine the first node.
     public nodeScript nextNode;
@@ -22,8 +22,11 @@ public class move : MonoBehaviour
     public GameObject player;
     public float sightRange;
     public float sightAngle;
-
-
+    public bool isAttacked;
+    public float timeBetweenAttacks;
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 10f;
+    public GameObject shootPoint;
 
     private void Start()
     {
@@ -36,7 +39,11 @@ public class move : MonoBehaviour
     {
         //If there's no next node, this unit will not move
         if (nextNode == null)
+        {
+            transform.LookAt(player.transform);
             return;
+        }
+           // return;
         Vector3 movement =
            (nextNode.transform.position - transform.position).normalized
            * speed
@@ -51,15 +58,15 @@ public class move : MonoBehaviour
         {
             nextNode = nextNode.GetNext();
         }
-        
+
+
         if (Vector3.Distance(transform.position, player.transform.position) <= sightRange &&
-     Vector3.Angle(transform.forward, player.transform.position - transform.position) <= sightAngle)
+   Vector3.Angle(transform.forward, player.transform.position - transform.position) <= sightAngle)
         {
-            
+
             state = State.Chase;
         }
 
-        
         switch (state)
         {
             case State.Patrol:
@@ -78,6 +85,7 @@ public class move : MonoBehaviour
         //If there's no next node, this unit will not move
         if (nextNode == null)
             return;
+        
 
         Vector3 movement =
             (nextNode.transform.position - transform.position).normalized
@@ -95,6 +103,7 @@ public class move : MonoBehaviour
             // when u get to the next node, pause state is started
             state = State.Pause;
         }
+       
     }
     void pause()
     {
@@ -104,10 +113,51 @@ public class move : MonoBehaviour
             state = State.Patrol;
             return;
         }
-        pauseTimer = Time.deltaTime;
+        pauseTimer += Time.deltaTime;
     }
+
     void chase()
     {
-        //this.gameObject
+        //Debug.Log("Chase started");
+
+        nextNode = null;
+        // Face the player
+        Vector3 direction = (player.transform.position - transform.position).normalized;
+        Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 360 * Time.deltaTime);
+
+        if (!isAttacked)
+        {
+            //Debug.Log("Entered");
+            StartCoroutine(ResetAndShoot());
+        }
+    }
+
+    IEnumerator ResetAndShoot()
+    {
+        ShootBullet();
+        Debug.Log("Shot bullet");
+        isAttacked = true;
+        yield return new WaitForSeconds(timeBetweenAttacks);
+        isAttacked = false;
+        chase();
+    }
+
+    void ShootBullet()
+    {
+        // Calculate the direction vector pointing towards the player
+        Vector3 direction = (player.transform.position - shootPoint.transform.position).normalized;
+
+        // Instantiate the bullet at the shootPoint's position and rotation
+        GameObject bullet = Instantiate(bulletPrefab, shootPoint.transform.position, Quaternion.LookRotation(direction));
+    }
+
+
+    void Attacked()
+    {
+        
+        isAttacked = false;
+        state = State.Chase;
+        Debug.Log("Reset attack");
     }
 }
