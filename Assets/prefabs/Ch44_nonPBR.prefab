@@ -319,9 +319,9 @@ MonoBehaviour:
   sightAngle: 90
   isAttacked: 0
   timeBetweenAttacks: 1
-  bulletPrefab: {fileID: 5475769082243430338, guid: 91ea1055be8663947ba59dd1dfe0dc22, type: 3}
+  bulletPrefab: {fileID: 2978566554981762643, guid: bc0e16dc564874c4799b0996d6ab51e7, type: 3}
   bulletSpeed: 0.001
-  shootPoint: {fileID: 0}
+  shootPoint: {fileID: 8534909663901643811}
 --- !u!114 &202649105373943511
 MonoBehaviour:
   m_ObjectHideFlags: 0
