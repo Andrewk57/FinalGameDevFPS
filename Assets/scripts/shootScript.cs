@@ -9,6 +9,7 @@ public class shootScript : MonoBehaviour
     public GameObject impactPNG;
     public int Damage = 35;
     public ParticleSystem particle;
+    public AudioSource shot;
 
     void Update()
     {
@@ -18,6 +19,7 @@ public class shootScript : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
                 GameObject impactEffectGO = Instantiate(impactPNG, hit.point, Quaternion.identity) as GameObject;
+                shot.Play();
                 Destroy(impactEffectGO, 3f);
                 if (hit.collider.gameObject.tag == "Enemy")
                 {

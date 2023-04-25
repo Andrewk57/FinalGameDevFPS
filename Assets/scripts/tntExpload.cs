@@ -7,6 +7,7 @@ public class tntExpload : MonoBehaviour
     public static bool isBlown = false;
     public float radius;
     public static GameObject tnt;
+    public AudioSource expload;
 
     private void Start()
     {
@@ -16,7 +17,8 @@ public class tntExpload : MonoBehaviour
     {
         if (isBlown == true && tnt == this.gameObject)
         {
-            Debug.Log(isBlown);
+            //Debug.Log(isBlown);
+            expload.Play();
             Collider[] enemies = Physics.OverlapSphere(transform.position, radius);
             Debug.Log("Got enemies");
             Debug.Log(enemies.Length);
