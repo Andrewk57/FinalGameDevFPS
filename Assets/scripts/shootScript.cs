@@ -6,16 +6,10 @@ public class shootScript : MonoBehaviour
 {
     private RaycastHit hit;
     private Ray ray;
-    //public GameObject shootPoint;
     public GameObject impactPNG;
     public int Damage = 35;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public ParticleSystem particle;
 
-    // Update is called once per frame
     void Update()
     {
         ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
@@ -30,8 +24,14 @@ public class shootScript : MonoBehaviour
                     healthManagerEnemy health = hit.collider.gameObject.GetComponent<healthManagerEnemy>();
                     health.damage(Damage);
                 }
+                if (hit.collider.gameObject.tag == "TNT")
+                {
+                    tntExpload tntScript = hit.collider.gameObject.GetComponent<tntExpload>();
+                    Instantiate(particle, hit.point, Quaternion.identity);
+                    tntExpload.isBlown = true;
+                    tntExpload.tnt = hit.collider.gameObject;
+                }
             }
         }
     }
-    
 }

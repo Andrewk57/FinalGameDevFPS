@@ -27,10 +27,11 @@ public class move : MonoBehaviour
     public GameObject bulletPrefab;
     public float bulletSpeed = 10f;
     public GameObject shootPoint;
+    public Animator animator;
 
     private void Start()
     {
-        
+        animator = this.GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
     }
 
@@ -119,7 +120,8 @@ public class move : MonoBehaviour
     void chase()
     {
         //Debug.Log("Chase started");
-
+       // animator.SetBool("isPatrolling", false);
+        //Debug.Log("Animation should have stopped");
         nextNode = null;
         // Face the player
         Vector3 direction = (player.transform.position - transform.position).normalized;
