@@ -10,7 +10,14 @@ public class shootScript : MonoBehaviour
     public int Damage = 35;
     public ParticleSystem particle;
     public AudioSource shot;
-
+    public ParticleSystem gb;
+    public Transform shootPoint;
+    public AudioSource hitShot;
+    private void Start()
+    {
+        Time.timeScale = 1f;
+        AudioListener.volume = 1f;
+    }
     void Update()
     {
         ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
@@ -20,9 +27,12 @@ public class shootScript : MonoBehaviour
             {
                 GameObject impactEffectGO = Instantiate(impactPNG, hit.point, Quaternion.identity) as GameObject;
                 shot.Play();
+                var cloneGB = Instantiate(gb, shootPoint);
+                Destroy(cloneGB, 3f);
                 Destroy(impactEffectGO, 3f);
                 if (hit.collider.gameObject.tag == "Enemy")
                 {
+                    hitShot.Play(); 
                     healthManagerEnemy health = hit.collider.gameObject.GetComponent<healthManagerEnemy>();
                     health.damage(Damage);
                 }

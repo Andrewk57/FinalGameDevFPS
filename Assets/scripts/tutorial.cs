@@ -46,6 +46,14 @@ public class tutorial : MonoBehaviour
                 popUpIndex++;
             }
         }
+        else if (popUpIndex == 3)
+        {
+            if (GameObject.Find("key")== null)
+            {
+                Debug.Log("Step 4: Got Key Transition to next level");
+                popUpIndex++;
+            }
+        }
 
     }
 }

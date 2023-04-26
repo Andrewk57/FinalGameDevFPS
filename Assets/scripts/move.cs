@@ -120,7 +120,7 @@ public class move : MonoBehaviour
     void chase()
     {
         //Debug.Log("Chase started");
-       // animator.SetBool("isPatrolling", false);
+       animator.SetBool("isPatrolling", false);
         //Debug.Log("Animation should have stopped");
         nextNode = null;
         // Face the player

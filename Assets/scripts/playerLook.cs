@@ -20,7 +20,8 @@ public class playerLook : MonoBehaviour
 
     void Update()
     {
-       
+       if (pauseMenu.isPaused == false && playerMovement.isDead == false)
+        {
             var md = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
             md = Vector2.Scale(md, new Vector2(sensitivity * smoothing, sensitivity * smoothing));
@@ -36,8 +37,10 @@ public class playerLook : MonoBehaviour
 
             transform.localRotation = Quaternion.AngleAxis(-mouseLook.y, Vector3.right);
             character.transform.localRotation = Quaternion.AngleAxis(mouseLook.x, character.transform.up);
-        
-        
+
+        }
+
+
     }
 
 
